@@ -25,7 +25,7 @@ export function initTable(settings, onAction) {
         onAction()
     })
     root.container.addEventListener('reset', () => {
-        setTImeout(onAction)
+        setTimeout(onAction)
     })
     root.container.addEventListener('submit', (e) => {
         e.preventDefault()
@@ -36,7 +36,13 @@ export function initTable(settings, onAction) {
         const nextRows = data.map(item => {
             const row = cloneTemplate(rowTemplate)
             Object.keys(item).forEach(key => {
-                if (row.elements[key] && item[key] !== undefined) row.elements[key].textContent = item[key];
+                if (row.elements[key] && item[key] !== undefined) {
+                    if (row.elements[key].tagName === 'INPUT' || row.elements[key].tagName === 'SELECT') {
+                        row.elements[key].value = item[key];
+                    } else {
+                        row.elements[key].textContent = item[key];
+                    }
+                }
             })
             return row.container
         });
